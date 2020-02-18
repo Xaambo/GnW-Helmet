@@ -19,8 +19,9 @@ public class Game extends JPanel {
         JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
         Game game = new Game();
         frame.add(game);
-        frame.setSize(500, 300);
+        frame.setSize(500, 400);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         while (true) {
@@ -54,7 +55,7 @@ public class Game extends JPanel {
             }
         });
         setFocusable(true);
-        //Sound.BACK.loop();
+        Sound.BACK2.loop();
     }
 
     private void move() {
@@ -75,6 +76,7 @@ public class Game extends JPanel {
     }
 
     public void gameOver() {
+        Sound.BACK.stop();
         JOptionPane.showMessageDialog(this, "Has mort amb una puntuació de: " + getScore(),
                 "U DEEEED LMAOOOO", JOptionPane.YES_NO_OPTION);
         System.exit(ABORT);

@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 public class Player {
 
-    private static final int Y = 205;
+    private static final int Y = 305;
     private static final int WIDTH = 30;
     private static final int HEIGHT = 40;
 
@@ -30,10 +30,10 @@ public class Player {
     public void keyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            xa = -60;
+            xa = -75;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            xa = 60;
+            xa = 75;
         }
 
         move();
