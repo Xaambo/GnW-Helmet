@@ -10,36 +10,50 @@ public class Player {
     private static final int HEIGHT = 40;
 
     int x = 20;
-    int xa = 0;
+    int vides = 10;
     private Game game;
+    private Logic logic = new Logic();
 
     public Player(Game game) {
         this.game= game;
     }
 
-    public void move() {
-        if (x + xa > 10 && x + xa < game.getWidth() - 20) {
-            x = x + xa;
+    public int move(int moviment) {
+        if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
+            if (logic.collision(game)) {
+                vides = vides - 1;
+
+            } else if (vides <= 0) {
+                game.gameOver(game);
+            } else {
+                x = x + moviment;
+            }
+
+            moviment = 0;
         }
+
+        return moviment;
     }
 
-    public void keyReleased(KeyEvent e) {
-        xa = 0;
-    }
+    public int keyPressed(KeyEvent e) {
 
-    public void keyPressed(KeyEvent e) {
+        int moviment = 0;
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            xa = -75;
+            moviment = -75;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            xa = 75;
+            moviment = 75;
         }
 
-        move();
+        return moviment;
     }
 
     public void paint(Graphics2D g) {
         g.fillRect(x, Y, WIDTH, HEIGHT);
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, Y, WIDTH, HEIGHT);
     }
 }
