@@ -39,5 +39,5 @@ public abstract class Eina {
         return new Rectangle(x, y, costat, costat);
     }
 
-    public abstract void paint(Graphics2D g);
+    public void paint(Graphics2D g) { g.fillRect(x, y, costat, costat); };
 }

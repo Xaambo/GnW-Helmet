@@ -10,44 +10,32 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class Game extends JPanel {
+public class Game extends JPanel implements Runnable {
 
-    int speed = 2;
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     Player player = new Player(this);
     ArrayList<Eina> eines = new ArrayList<>();
     int moviment = 0;
-    //private Game game;
+    Runnable r1,r2;
+    Thread t1, t2;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Game programa = new Game();
         programa.iniciar();
     }
 
-    public void iniciar() throws InterruptedException {
-        JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
+    public void iniciar() {
+
         Game game = new Game();
+        t1 = new Thread(game);
+        JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
         frame.add(game);
         frame.setSize(500, 400);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Thread t = new Thread(() -> {
-            try {
-                movimentEines(game);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        t.start();
-
-        while (true) {
-            game.move();
-            game.repaint();
-            Thread.sleep(10);
-        }
+        t1.start();
     }
 
     private Eina crearEina(Game game) {
@@ -97,12 +85,13 @@ public class Game extends JPanel {
             }
         });
         setFocusable(true);
-        //Sound.BACK.loop();
     }
 
-    private void move() {
+    private void move(Game game) {
 
         moviment = player.move(moviment);
+
+        movimentEines(game);
 
     }
 
@@ -122,20 +111,16 @@ public class Game extends JPanel {
         g2d.drawString(String.valueOf(player.vides), 10, 30);
     }
 
-    public void movimentEines(Game game) throws InterruptedException {
-        while (true) {
-            if (eines.size() < 8) {
-                eines.add(crearEina(game));
-            }
-
-            for (int i = 0; i < eines.size(); i++) {
-                eines.get(i).move(game);
-            }
-
-            game.repaint();
-
-            Thread.sleep(500);
+    public ArrayList<Eina> movimentEines(Game game) {
+        if (eines.size() < 8) {
+            eines.add(crearEina(game));
         }
+
+        for (int i = 0; i < eines.size(); i++) {
+            eines.get(i).move(game);
+        }
+
+        return eines;
     }
 
     public void gameOver(Game game) {
@@ -143,5 +128,18 @@ public class Game extends JPanel {
         JOptionPane.showMessageDialog(this, "Has mort amb una puntuació de: " + game.player.vides,
                 "U DEEEED LMAOOOO", JOptionPane.YES_NO_OPTION);
         System.exit(ABORT);
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            move(this);
+            repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
