@@ -15,7 +15,7 @@ public class Player {
     private Logic logic = new Logic();
 
     public Player(Game game) {
-        this.game= game;
+        this.game = game;
     }
 
     public int move(int moviment) {
