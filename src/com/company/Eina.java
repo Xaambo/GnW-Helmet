@@ -8,6 +8,7 @@ public abstract class Eina {
     private int y;
     private int costat = 30;
     private Game game;
+    Logic logic = new Logic();
 
     public Eina(int x, int y, Game game) {
         this.x = x;
@@ -30,6 +31,7 @@ public abstract class Eina {
     public void move(Game game) {
         if (y < 310) {
             y = y + 10;
+            logic.collision(game);
         } else {
             game.eines.remove(this);
         }

@@ -15,27 +15,29 @@ public class Game extends JPanel implements Runnable {
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     Player player = new Player(this);
     ArrayList<Eina> eines = new ArrayList<>();
-    int moviment = 0;
-    Runnable r1,r2;
-    Thread t1, t2;
+    Thread t1;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Game programa = new Game();
         programa.iniciar();
     }
 
-    public void iniciar() {
+    public void iniciar() throws InterruptedException {
 
-        Game game = new Game();
-        t1 = new Thread(game);
+        t1 = new Thread(this);
         JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
-        frame.add(game);
+        frame.add(this);
         frame.setSize(500, 400);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         t1.start();
+
+        while (true) {
+            movimentEines(this);
+            Thread.sleep(500);
+        }
     }
 
     private Eina crearEina(Game game) {
@@ -61,21 +63,18 @@ public class Game extends JPanel implements Runnable {
             default:
                 eina = new Martell(0, 0, game);
         }
-
         return eina;
     }
 
     public Game() {
         addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
+            public void keyTyped(KeyEvent e) {}
 
             @Override
             public void keyPressed(KeyEvent e) {
                 if (pressed.compareAndSet(false, true)) {
-                    moviment = player.keyPressed(e);
+                    player.keyPressed(e);
                 }
             }
 
@@ -85,14 +84,6 @@ public class Game extends JPanel implements Runnable {
             }
         });
         setFocusable(true);
-    }
-
-    private void move(Game game) {
-
-        moviment = player.move(moviment);
-
-        movimentEines(game);
-
     }
 
     @Override
@@ -119,7 +110,6 @@ public class Game extends JPanel implements Runnable {
         for (int i = 0; i < eines.size(); i++) {
             eines.get(i).move(game);
         }
-
         return eines;
     }
 
@@ -132,8 +122,8 @@ public class Game extends JPanel implements Runnable {
 
     @Override
     public void run() {
+
         while (true) {
-            move(this);
             repaint();
             try {
                 Thread.sleep(10);

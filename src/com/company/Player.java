@@ -20,10 +20,8 @@ public class Player {
 
     public int move(int moviment) {
         if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
-            if (logic.collision(game)) {
-                vides = vides - 1;
-
-            } else if (vides <= 0) {
+            //logic.collision(this.game);
+            if (vides <= 0) {
                 game.gameOver(game);
             } else {
                 x = x + moviment;
@@ -35,7 +33,7 @@ public class Player {
         return moviment;
     }
 
-    public int keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
 
         int moviment = 0;
 
@@ -46,7 +44,7 @@ public class Player {
             moviment = 75;
         }
 
-        return moviment;
+        move(moviment);
     }
 
     public void paint(Graphics2D g) {
