@@ -21,12 +21,25 @@ public class Player {
         if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
             //logic.collision(this.game);
             if (vides <= 0) {
+
                 game.gameOver(game);
-            } /*else if(x > ) {
 
+            } else if((x + moviment) >= 390) {
 
+                x = x + moviment;
+                x = 20;
 
-            }*/ else {
+                game.punts = game.punts + 5;
+
+                if (game.punts == 30) {
+                    game.punts = 0;
+                    game.ronda = game.ronda + 1;
+                    if (game.temps > 100) {
+                        game.temps = game.temps - 100;
+                    }
+                }
+
+            } else {
                 x = x + moviment;
             }
 

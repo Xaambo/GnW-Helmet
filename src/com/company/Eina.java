@@ -29,10 +29,11 @@ public abstract class Eina {
     }
 
     public void move(Game game) {
-        if (y < 310) {
+        if (y < 210) {
             y = y + 10;
             logic.collision(game);
         } else {
+            y = y + 10;
             game.eines.remove(this);
         }
     };
@@ -41,5 +42,5 @@ public abstract class Eina {
         return new Rectangle(x, y, costat, costat);
     }
 
-    public void paint(Graphics2D g) { g.fillRect(x, y, costat, costat); };
+    public abstract void paint(Graphics2D g);
 }

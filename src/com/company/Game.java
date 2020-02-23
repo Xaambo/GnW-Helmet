@@ -15,7 +15,10 @@ public class Game extends JPanel implements Runnable {
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     Player player = new Player(this);
     ArrayList<Eina> eines = new ArrayList<>();
-    Thread t1;
+    int punts = 0;
+    int ronda = 0;
+    int temps = 500;
+    Thread t1, t2;
 
     public static void main(String[] args) throws InterruptedException {
         Game programa = new Game();
@@ -32,17 +35,32 @@ public class Game extends JPanel implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        t2 = new Thread(() -> {
+            while (true) {
+                if (eines.size() < 20) {
+                    eines.add(crearEina(Game.this));
+                    try {
+                        Thread.sleep(temps * 3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         t1.start();
+        t2.start();
 
         while (true) {
             movimentEines(this);
-            Thread.sleep(500);
+            Thread.sleep(temps);
         }
     }
 
     private Eina crearEina(Game game) {
 
         int numeroRandom;
+        ArrayList<Eina> eines = new ArrayList<>();
         Eina eina;
 
         numeroRandom = (int) Math.floor(Math.random() * 4);
@@ -52,13 +70,13 @@ public class Game extends JPanel implements Runnable {
                 eina = new Martell(95, 0, game);
                 break;
             case 1:
-                eina = new Martell(170, 0, game);
+                eina = new Tornavis(170, 0, game);
                 break;
             case 2:
                 eina = new Martell(245, 0, game);
                 break;
             case 3:
-                eina = new Martell(320, 0, game);
+                eina = new Tornavis(320, 0, game);
                 break;
             default:
                 eina = new Martell(0, 0, game);
@@ -98,14 +116,19 @@ public class Game extends JPanel implements Runnable {
         }
 
         g2d.setColor(Color.GRAY);
-        g2d.setFont(new Font("Verdana", Font.BOLD, 30));
-        g2d.drawString(String.valueOf(player.vides), 10, 30);
+        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+        g2d.drawString("Vides: " + player.vides, 10, 30);
+
+        g2d.setColor(Color.GRAY);
+        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+        g2d.drawString("Puntuació: " + punts, 325, 30);
+
+        g2d.setColor(Color.GRAY);
+        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+        g2d.drawString("Ronda: " + ronda, 365, 60);
     }
 
     public ArrayList<Eina> movimentEines(Game game) {
-        if (eines.size() < 8) {
-            eines.add(crearEina(game));
-        }
 
         for (int i = 0; i < eines.size(); i++) {
             eines.get(i).move(game);
