@@ -27,7 +27,7 @@ public class Game extends JPanel implements Runnable {
         t1 = new Thread(this);
         JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
         frame.add(this);
-        frame.setSize(500, 400);
+        frame.setSize(500, 300);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
