@@ -1,16 +1,18 @@
-package com.company;
+package com.company.Models;
+
+import com.company.Game;
 
 import java.awt.*;
 
-public class Martell extends Eina {
+public class Tornavis extends Eina {
 
-    public Martell(int x, int y, Game game) {
+    public Tornavis(int x, int y, Game game) {
         super(x, y, game);
     }
 
     @Override
     public void paint(Graphics2D g) {
-        g.setPaint(Color.red);
+        g.setPaint(Color.orange);
         g.fillRect(getX(), getY(), getCostat(), getCostat());
     }
 

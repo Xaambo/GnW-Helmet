@@ -11,6 +11,8 @@ public class Player {
 
     int x = 20;
     int vides = 10;
+    int intercanvi = 1;
+    boolean escut = false;
     private Game game;
 
     public Player(Game game) {
@@ -18,6 +20,9 @@ public class Player {
     }
 
     public int move(int moviment) {
+
+        moviment = moviment * intercanvi;
+
         if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
             //logic.collision(this.game);
             if (vides <= 0) {

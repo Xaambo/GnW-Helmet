@@ -1,4 +1,7 @@
-package com.company;
+package com.company.Models;
+
+import com.company.Game;
+import com.company.Logic;
 
 import java.awt.*;
 

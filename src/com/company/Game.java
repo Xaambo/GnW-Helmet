@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.Models.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,11 +16,25 @@ public class Game extends JPanel implements Runnable {
 
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     Player player = new Player(this);
-    ArrayList<Eina> eines = new ArrayList<>();
+    public ArrayList<Eina> eines = new ArrayList<>();
     int punts = 0;
     int ronda = 0;
     int temps = 500;
     Thread t1, t2;
+
+    private final static int PRIMER = 95;
+    private final static int SEGON = 170;
+    private final static int TERCER = 245;
+    private final static int QUART = 320;
+
+    private ArrayList<Integer> posicions = new ArrayList<>() {{
+        add(PRIMER);
+        add(SEGON);
+        add(TERCER);
+        add(QUART);
+    }};
+
+    Logic logic = new Logic();
 
     public static void main(String[] args) throws InterruptedException {
         Game programa = new Game();
@@ -40,7 +56,7 @@ public class Game extends JPanel implements Runnable {
                 if (eines.size() < 20) {
                     eines.add(crearEina(Game.this));
                     try {
-                        Thread.sleep(temps * 3);
+                        Thread.sleep(temps * 5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -59,29 +75,32 @@ public class Game extends JPanel implements Runnable {
 
     private Eina crearEina(Game game) {
 
-        int numeroRandom;
-        ArrayList<Eina> eines = new ArrayList<>();
-        Eina eina;
+        int eina;
+        int posicio;
 
-        numeroRandom = (int) Math.floor(Math.random() * 4);
+        Eina einaSeleccionada = null;
 
-        switch (numeroRandom) {
+        eina = logic.randomNum(5);
+        posicio = logic.randomNum(4);
+
+        switch (eina) {
             case 0:
-                eina = new Martell(95, 0, game);
+                einaSeleccionada = new Martell(posicions.get(posicio), 0, game);
                 break;
             case 1:
-                eina = new Tornavis(170, 0, game);
+                einaSeleccionada = new Tornavis(posicions.get(posicio), 0, game);
                 break;
             case 2:
-                eina = new Martell(245, 0, game);
+                einaSeleccionada = new Clau(posicions.get(posicio), 0, game);
                 break;
             case 3:
-                eina = new Tornavis(320, 0, game);
+                einaSeleccionada = new Escut(posicions.get(posicio), 0, game);
                 break;
-            default:
-                eina = new Martell(0, 0, game);
+            case 4:
+                einaSeleccionada = new Vida(posicions.get(posicio), 0, game);
+                break;
         }
-        return eina;
+        return einaSeleccionada;
     }
 
     public Game() {

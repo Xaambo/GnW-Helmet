@@ -1,8 +1,12 @@
 package com.company;
 
+import com.company.Models.*;
+
 public class Logic {
 
-    protected boolean collision(Game game) {
+    Thread efectes;
+
+    public boolean collision(Game game) {
 
         int vides = game.player.vides;
         Eina eina;
@@ -10,30 +14,77 @@ public class Logic {
         for (int i = 0; i < game.eines.size(); i++) {
             if (game.player.getBounds().intersects(game.eines.get(i).getBounds())) {
 
-                eina = game.eines.get(i);
-                game.eines.remove(i);
+                if (!game.player.escut) {
 
-                if (eina instanceof Martell) {
+                    eina = game.eines.get(i);
+                    game.eines.remove(i);
 
-                    vides = vides - 2;
-                    game.player.x = 20;
+                    if (eina instanceof Martell) {
 
-                } else if (eina instanceof Tornavis) {
+                        vides = vides - 2;
+                        game.player.x = 20;
 
-                    vides = vides - 2;
+                    } else if (eina instanceof Clau) {
 
+                        vides = vides - 1;
+                        efectesPlayer(2000, 0, false, game);
+
+                    } else if (eina instanceof Tornavis) {
+
+                        vides = vides - 1;
+                        efectesPlayer(3000, -1, false, game);
+
+                    } else if (eina instanceof Vida) {
+
+                        vides = 10;
+
+                    } else if (eina instanceof Escut) {
+
+                        efectesPlayer(5000, 1, true, game);
+
+                    }
+
+                    game.player.vides = vides;
+
+                    if (vides == 0) {
+                        game.gameOver(game);
+                    }
+
+                    return true;
                 }
-
-                game.player.vides = vides;
-
-                if (vides == 0) {
-                    game.gameOver(game);
-                }
-
-                return true;
             }
         }
 
         return false;
+    }
+
+    public int randomNum(int finsA) {
+
+        //EL 0 ESTA INCLUIT
+
+        int random = (int) Math.floor(Math.random() * finsA);
+
+        return random;
+    }
+
+    public void efectesPlayer(int tempsParat, int efecte, Boolean escut, Game game) {
+
+        game.player.intercanvi = efecte;
+        game.player.escut = escut;
+
+        efectes = new Thread(() -> {
+
+            try {
+                Thread.sleep(tempsParat);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            game.player.intercanvi = 1;
+            game.player.escut = false;
+        });
+
+        efectes.start();
+
     }
 }
