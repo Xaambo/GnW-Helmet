@@ -9,7 +9,7 @@ public class Image {
 
     public BufferedImage carregaImatge(String nomFitxer) throws IOException {
 
-        BufferedImage image = ImageIO.read(new File("Imatges/" + nomFitxer));
+        BufferedImage image = ImageIO.read(new File("images/ArcherGilgamesh.png"));
 
         return image;
     }
