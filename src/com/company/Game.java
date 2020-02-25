@@ -5,6 +5,7 @@ import com.company.Models.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.JFrame;
@@ -36,7 +37,7 @@ public class Game extends JPanel implements Runnable {
 
     Logic logic = new Logic();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Game programa = new Game();
         programa.iniciar();
     }
@@ -103,7 +104,7 @@ public class Game extends JPanel implements Runnable {
         return einaSeleccionada;
     }
 
-    public Game() {
+    public Game() throws IOException {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
@@ -128,7 +129,12 @@ public class Game extends JPanel implements Runnable {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        player.paint(g2d);
+
+        try {
+            player.paint(g2d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < eines.size(); i++) {
             eines.get(i).paint(g2d);

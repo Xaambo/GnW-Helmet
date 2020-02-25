@@ -1,13 +1,21 @@
 package com.company;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Player {
 
+    private Image imatges = new Image();
+
+    BufferedImage image;
+
     private static final int Y = 205;
     private static final int WIDTH = 30;
-    private static final int HEIGHT = 40;
+    private static final int HEIGHT = 50;
 
     int x = 20;
     int vides = 10;
@@ -15,8 +23,9 @@ public class Player {
     boolean escut = false;
     private Game game;
 
-    public Player(Game game) {
+    public Player(Game game) throws IOException {
         this.game = game;
+        image = imatges.carregaImatge("ArcherGilgamesh.png");
     }
 
     public int move(int moviment) {
@@ -68,8 +77,10 @@ public class Player {
         move(moviment);
     }
 
-    public void paint(Graphics2D g) {
-        g.fillRect(x, Y, WIDTH, HEIGHT);
+    public void paint(Graphics2D g) throws IOException {
+
+        g.drawImage(image, x, Y, WIDTH, HEIGHT, null);
+
     }
 
     public Rectangle getBounds() {
