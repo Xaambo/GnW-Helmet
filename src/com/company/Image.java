@@ -9,8 +9,6 @@ public class Image {
 
     public BufferedImage carregaImatge(String nomFitxer) throws IOException {
 
-        BufferedImage image = ImageIO.read(new File("images/ArcherGilgamesh.png"));
-
-        return image;
+        return ImageIO.read(this.getClass().getResource("Imatges/" + nomFitxer));
     }
 }

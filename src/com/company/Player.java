@@ -13,9 +13,9 @@ public class Player {
 
     BufferedImage image;
 
-    private static final int Y = 205;
-    private static final int WIDTH = 30;
-    private static final int HEIGHT = 50;
+    private static final int Y = 175;
+    private static final int WIDTH = 70;
+    private static final int HEIGHT = 70;
 
     int x = 20;
     int vides = 10;
@@ -25,7 +25,7 @@ public class Player {
 
     public Player(Game game) throws IOException {
         this.game = game;
-        image = imatges.carregaImatge("ArcherGilgamesh.png");
+        image = imatges.carregaImatge("MrGameNWatch.png");
     }
 
     public int move(int moviment) {
