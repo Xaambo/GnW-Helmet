@@ -13,9 +13,9 @@ public class Player {
 
     BufferedImage image;
 
-    private static final int Y = 175;
+    private static final int Y = 185;
     private static final int WIDTH = 70;
-    private static final int HEIGHT = 70;
+    private static final int HEIGHT = 60;
 
     int x = 20;
     int vides = 10;
