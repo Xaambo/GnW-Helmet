@@ -15,7 +15,7 @@ public class Martell extends Eina {
 
     public Martell(int x, int y, Game game) throws IOException {
         super(x, y, game);
-        image = imatges.carregaImatge("martillo.png");
+        image = imatges.carregaImatge("Martillo.png");
     }
 
     @Override

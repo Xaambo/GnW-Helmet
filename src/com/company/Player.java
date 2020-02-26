@@ -38,7 +38,7 @@ public class Player {
 
                 game.gameOver(game);
 
-            } else if((x + moviment) >= 1120) {
+            } else if(((x + moviment) >= 1120) /*&& game.porta.isClosed()*/) {
 
                 x = x + moviment;
                 x = 20;
@@ -53,7 +53,7 @@ public class Player {
                     }
                 }
 
-            } else {
+            } else if ((x + moviment) < game.getWidth()) {
                 x = x + moviment;
             }
 
