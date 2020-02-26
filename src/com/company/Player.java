@@ -13,11 +13,11 @@ public class Player {
 
     BufferedImage image;
 
-    private static final int Y = 185;
-    private static final int WIDTH = 70;
-    private static final int HEIGHT = 60;
+    private static final int Y = 520;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 141;
 
-    int x = 20;
+    int x = 30;
     int vides = 10;
     int intercanvi = 1;
     boolean escut = false;
@@ -25,7 +25,7 @@ public class Player {
 
     public Player(Game game) throws IOException {
         this.game = game;
-        image = imatges.carregaImatge("MrGameNWatch.png");
+        image = imatges.carregaImatge("ArcherGilgamesh.png");
     }
 
     public int move(int moviment) {
@@ -38,7 +38,7 @@ public class Player {
 
                 game.gameOver(game);
 
-            } else if((x + moviment) >= 390) {
+            } else if((x + moviment) >= 1120) {
 
                 x = x + moviment;
                 x = 20;
@@ -68,18 +68,19 @@ public class Player {
         int moviment = 0;
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            moviment = -75;
+            moviment = -160;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            moviment = 75;
+            moviment = 160;
         }
 
         move(moviment);
     }
 
-    public void paint(Graphics2D g) throws IOException {
+    public void paint(Graphics2D g) {
 
         g.drawImage(image, x, Y, WIDTH, HEIGHT, null);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     }
 

@@ -9,7 +9,7 @@ public abstract class Eina {
 
     private int x;
     private int y;
-    private int costat = 30;
+    private int costat = 100;
     private Game game;
     Logic logic = new Logic();
 
@@ -32,11 +32,11 @@ public abstract class Eina {
     }
 
     public void move(Game game) {
-        if (y < 210) {
-            y = y + 10;
+        if (y < 525) {
+            y = y + 30;
             logic.collision(game);
         } else {
-            y = y + 10;
+            y = y + 30;
             game.eines.remove(this);
         }
     };
