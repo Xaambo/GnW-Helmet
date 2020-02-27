@@ -15,7 +15,7 @@ public class Player {
 
     private static final int Y = 520;
     private static final int WIDTH = 100;
-    private static final int HEIGHT = 141;
+    private static final int HEIGHT = 164;
 
     int x = 30;
     int vides = 10;
