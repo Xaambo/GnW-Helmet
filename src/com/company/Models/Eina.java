@@ -31,12 +31,12 @@ public abstract class Eina {
         return costat;
     }
 
-    public void move(Game game) {
+    public void move(Game game, int moviment) {
         if (y < 525) {
-            y = y + 30;
+            y = y + moviment;
             logic.collision(game);
         } else {
-            y = y + 30;
+            y = y + 50;
             game.eines.remove(this);
         }
     };

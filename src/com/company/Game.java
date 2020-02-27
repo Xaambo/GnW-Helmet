@@ -20,7 +20,8 @@ public class Game extends JPanel implements Runnable {
     public ArrayList<Eina> eines = new ArrayList<>();
     int punts = 0;
     int ronda = 0;
-    int temps = 500;
+    int temps = 10;
+    int movimentEina = 5;
     Thread t1, t2;
 
     private final static int PRIMER = 190;
@@ -48,6 +49,8 @@ public class Game extends JPanel implements Runnable {
 
     public void iniciar() throws InterruptedException {
 
+        System.setProperty("sun.java2d.opengl","True");
+
         t1 = new Thread(this);
         JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
         frame.add(this);
@@ -65,7 +68,7 @@ public class Game extends JPanel implements Runnable {
                         e.printStackTrace();
                     }
                     try {
-                        Thread.sleep(temps * 5);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -160,7 +163,7 @@ public class Game extends JPanel implements Runnable {
     public ArrayList<Eina> movimentEines(Game game) {
 
         for (int i = 0; i < eines.size(); i++) {
-            eines.get(i).move(game);
+            eines.get(i).move(game, movimentEina);
         }
         return eines;
     }
