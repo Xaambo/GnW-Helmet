@@ -28,7 +28,7 @@ public class Player {
         image = imatges.carregaImatge("ArcherGilgamesh.png");
     }
 
-    public int move(int moviment) {
+    public int move(int moviment) throws InterruptedException {
 
         moviment = moviment * intercanvi;
 
@@ -45,11 +45,11 @@ public class Player {
 
                 game.punts = game.punts + 5;
 
-                if (game.punts == 30) {
+                if (game.punts == 5) {
                     game.punts = 0;
                     game.ronda = game.ronda + 1;
-                    if (game.temps > 100) {
-                        game.temps = game.temps - 100;
+                    if (game.movimentEina < 50) {
+                        game.movimentEina = game.movimentEina + 1;
                     }
                 }
 
@@ -63,7 +63,7 @@ public class Player {
         return moviment;
     }
 
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) throws InterruptedException {
 
         int moviment = 0;
 

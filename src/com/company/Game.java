@@ -123,7 +123,11 @@ public class Game extends JPanel implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (pressed.compareAndSet(false, true)) {
-                    player.keyPressed(e);
+                    try {
+                        player.keyPressed(e);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
 
