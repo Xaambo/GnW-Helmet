@@ -47,7 +47,7 @@ public class Logic {
                     game.player.vides = vides;
 
                     if (vides == 0) {
-                        game.gameOver(game);
+                        game.gameOver();
                     }
 
                     return true;
@@ -58,7 +58,7 @@ public class Logic {
         return false;
     }
 
-    public int randomNum(int finsA) {
+    public static int randomNum(int finsA) {
 
         //EL 0 ESTA INCLUIT
 

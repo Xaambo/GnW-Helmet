@@ -1,20 +1,18 @@
 package com.company;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.sound.sampled.*;
 import java.io.IOException;
 
 public class Player {
 
     private Image imatges = new Image();
+    private Sound sound = new Sound();
 
     BufferedImage image;
 
-    private static final int Y = 520;
+    private static final int Y = 505;
     private static final int WIDTH = 100;
     private static final int HEIGHT = 164;
 
@@ -23,24 +21,24 @@ public class Player {
     int intercanvi = 1;
     boolean escut = false;
     private Game game;
-    Thread t;
+    private Thread t;
 
     public Player(Game game) throws IOException {
         this.game = game;
         image = imatges.carregaImatge("ArcherGilgamesh.png");
     }
 
-    public int move(int moviment) throws InterruptedException {
+    public void move(int moviment) {
 
         moviment = moviment * intercanvi;
 
         if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
-            //logic.collision(this.game);
+
             if (vides <= 0) {
 
-                game.gameOver(game);
+                game.gameOver();
 
-            } else if(((x + moviment) >= 1120) /*&& game.porta.isClosed()*/) {
+            } else if(((x + moviment) >= 1120) && game.porta.isOpen()) {
 
                 x = x + moviment;
 
@@ -50,51 +48,65 @@ public class Player {
                     try {
                         nextRound();
                         intercanvi = 1;
-                    } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
+                    } catch (InterruptedException | IOException e) {
                         e.printStackTrace();
                     }
                 });
 
                 t.start();
 
-                //Thread.sleep(5000);
-
-                //x = 20;
-
                 game.punts = game.punts + 5;
 
                 if (game.punts == 5) {
+
                     game.punts = 0;
                     game.ronda = game.ronda + 1;
-                    if (game.movimentEina < 50) {
+
+                    if (game.movimentEina < 50 && game.creacioEines > 150) {
+
                         game.movimentEina = game.movimentEina + 1;
+                        game.creacioEines = game.creacioEines - 30;
+
                     }
                 }
 
             } else if ((x + moviment) < (game.getWidth() - 160)) {
                 x = x + moviment;
             }
+        }
+    }
 
-            moviment = 0;
+    public void nextRound() throws InterruptedException, IOException {
+
+        int zashu = (Logic.randomNum(3) + 1);
+        int threadSleep = 0;
+
+        image = imatges.carregaImatge("ArcherGilgamesh2.png");
+
+        sound.playSound("zashu" + zashu);
+        game.paused.set(true);
+
+        switch (zashu) {
+            case 1:
+                threadSleep = 1470;
+                break;
+            case 2:
+                threadSleep = 600;
+                break;
+            case 3:
+                threadSleep = 2123;
+                break;
         }
 
-        return moviment;
-    }
+        Thread.sleep(threadSleep);
 
-    public void nextRound() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
-
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/zashu1.wav"));
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioIn);
-        clip.start();
-        game.paused.set(true);
-        Thread.sleep(1470);
         game.paused.set(false);
-        game.player.x = 20;
+        image = imatges.carregaImatge("ArcherGilgamesh.png");
+        game.player.x = 30;
 
     }
 
-    public void keyPressed(KeyEvent e) throws InterruptedException {
+    public void keyPressed(KeyEvent e) {
 
         int moviment = 0;
 

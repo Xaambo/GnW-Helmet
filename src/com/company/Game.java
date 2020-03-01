@@ -19,13 +19,15 @@ public class Game extends JPanel implements Runnable {
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
     Player player = new Player(this);
+    Porta porta = new Porta(this);
     public ArrayList<Eina> eines = new ArrayList<>();
+    Sound sound = new Sound();
     int punts = 0;
     int ronda = 0;
     int temps = 10;
+    int creacioEines = 500;
     int movimentEina = 5;
-    Thread t1, t2;
-    Clip backgound;
+    Thread t1, t2, t3;
 
     private final static int PRIMER = 190;
     private final static int SEGON = 350;
@@ -43,9 +45,7 @@ public class Game extends JPanel implements Runnable {
         add(SISE);
     }};
 
-    Logic logic = new Logic();
-
-    public static void main(String[] args) throws InterruptedException, IOException, LineUnavailableException, UnsupportedAudioFileException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Game programa = new Game();
         programa.iniciar();
     }
@@ -55,7 +55,7 @@ public class Game extends JPanel implements Runnable {
         System.setProperty("sun.java2d.opengl","True");
 
         t1 = new Thread(this);
-        JFrame frame = new JFrame("Game & Watch: Helmet JOJO EDITION");
+        JFrame frame = new JFrame("Game N' Watch: Helmet GILGAMESH EDITION");
         frame.add(this);
         frame.setSize(1280, 720);
         frame.setVisible(true);
@@ -64,14 +64,23 @@ public class Game extends JPanel implements Runnable {
 
         t2 = new Thread(() -> {
             while (true) {
-                if (eines.size() < 20) {
+                if (eines.size() < 20 && !paused.get()) {
                     try {
                         eines.add(crearEina(Game.this));
-                    } catch (IOException e) {
+                        Thread.sleep(creacioEines);
+                    } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        });
+
+        t3 = new Thread(() -> {
+            while (true) {
+                if (!paused.get()) {
                     try {
-                        Thread.sleep(500);
+                        porta.OpenAndClose();
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -81,6 +90,7 @@ public class Game extends JPanel implements Runnable {
 
         t1.start();
         t2.start();
+        t3.start();
 
         while (true) {
             movimentEines(this);
@@ -95,30 +105,24 @@ public class Game extends JPanel implements Runnable {
 
         Eina einaSeleccionada = null;
 
-        eina = logic.randomNum(5);
-        posicio = logic.randomNum(6);
+        eina = Logic.randomNum(100);
+        posicio = Logic.randomNum(6);
 
-        switch (eina) {
-            case 0:
-                einaSeleccionada = new Martell(posicions.get(posicio), 0, game);
-                break;
-            case 1:
-                einaSeleccionada = new Tornavis(posicions.get(posicio), 0, game);
-                break;
-            case 2:
-                einaSeleccionada = new Clau(posicions.get(posicio), 0, game);
-                break;
-            case 3:
-                einaSeleccionada = new Escut(posicions.get(posicio), 0, game);
-                break;
-            case 4:
-                einaSeleccionada = new Vida(posicions.get(posicio), 0, game);
-                break;
-        }
+        if (eina < 10)
+            einaSeleccionada = new Escut(posicions.get(posicio), 0, game);
+        else if (eina < 20)
+            einaSeleccionada = new Vida(posicions.get(posicio), 0, game);
+        else if (eina < 47)
+            einaSeleccionada = new Clau(posicions.get(posicio), 0, game);
+        else if (eina < 74)
+            einaSeleccionada = new Tornavis(posicions.get(posicio), 0, game);
+        else if (eina < 100)
+            einaSeleccionada = new Martell(posicions.get(posicio), 0, game);
+
         return einaSeleccionada;
     }
 
-    public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public Game() throws IOException {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
@@ -126,11 +130,7 @@ public class Game extends JPanel implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (pressed.compareAndSet(false, true) && !paused.get()) {
-                    try {
-                        player.keyPressed(e);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
+                    player.keyPressed(e);
                 }
             }
 
@@ -141,10 +141,7 @@ public class Game extends JPanel implements Runnable {
         });
         setFocusable(true);
 
-        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/fate.wav"));
-        backgound = AudioSystem.getClip();
-        backgound.open(audioIn);
-        backgound.loop(Clip.LOOP_CONTINUOUSLY);
+        sound.playLoop("fate");
     }
 
     @Override
@@ -153,6 +150,7 @@ public class Game extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        porta.paint(g2d);
         player.paint(g2d);
 
         for (int i = 0; i < eines.size(); i++) {
@@ -180,11 +178,13 @@ public class Game extends JPanel implements Runnable {
         return eines;
     }
 
-    public void gameOver(Game game) {
-        //Sound.BACK.stop();
-        backgound.close();
-        JOptionPane.showMessageDialog(this, "Has mort amb una puntuació de: " + game.player.vides,
-                "U DEEEED LMAOOOO", JOptionPane.YES_NO_OPTION);
+    public void gameOver() {
+        sound.close();
+        sound.playSound("gilgamesh2");
+        JOptionPane.showMessageDialog(this, "ZASSHU DONO \n" +
+                        "Rondes: " + ronda + "\n" +
+                        "Puntuació ronda final: " + punts,
+                "DOKO DA... BAASAKA", JOptionPane.ERROR_MESSAGE);
         System.exit(ABORT);
     }
 
