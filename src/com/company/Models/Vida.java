@@ -20,8 +20,7 @@ public class Vida extends Eina {
 
     @Override
     public void paint(Graphics2D g) {
-        g.setPaint(Color.green);
-        g.fillRect(getX(), getY(), getCostat(), getCostat());
+        g.drawImage(image, getX(), getY(), getCostat(), getCostat(), null);
     }
 
 }

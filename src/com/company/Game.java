@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class Game extends JPanel implements Runnable {
+public class Game extends JPanel {
 
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
@@ -45,22 +45,32 @@ public class Game extends JPanel implements Runnable {
         add(SISE);
     }};
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException {
         Game programa = new Game();
         programa.iniciar();
     }
 
-    public void iniciar() throws InterruptedException {
+    public void iniciar() {
 
         System.setProperty("sun.java2d.opengl","True");
 
-        t1 = new Thread(this);
         JFrame frame = new JFrame("Game N' Watch: Helmet GILGAMESH EDITION");
         frame.add(this);
         frame.setSize(1280, 720);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        t1 = new Thread(() -> {
+            while (true) {
+                try {
+                    movimentEines(Game.this);
+                    Thread.sleep(temps);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         t2 = new Thread(() -> {
             while (true) {
@@ -93,8 +103,12 @@ public class Game extends JPanel implements Runnable {
         t3.start();
 
         while (true) {
-            movimentEines(this);
-            Thread.sleep(temps);
+            this.repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -188,7 +202,7 @@ public class Game extends JPanel implements Runnable {
         System.exit(ABORT);
     }
 
-    @Override
+    /*@Override
     public void run() {
 
         while (true) {
@@ -199,5 +213,5 @@ public class Game extends JPanel implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }
