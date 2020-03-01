@@ -1,13 +1,21 @@
 package com.company.Models;
 
 import com.company.Game;
+import com.company.Image;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Vida extends Eina {
 
-    public Vida(int x, int y, Game game) {
+    private com.company.Image imatges = new Image();
+
+    BufferedImage image;
+
+    public Vida(int x, int y, Game game) throws IOException {
         super(x, y, game);
+        image = imatges.carregaImatge("Vida.png");
     }
 
     @Override

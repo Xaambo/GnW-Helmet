@@ -12,7 +12,7 @@ public class Clau extends Eina {
 
     @Override
     public void paint(Graphics2D g) {
-        g.setPaint(Color.yellow);
+        g.setPaint(Color.red);
         g.fillRect(getX(), getY(), getCostat(), getCostat());
     }
 
