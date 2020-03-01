@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Escut extends Eina {
 
-    private com.company.Image imatges = new Image();
+    private Image imatges = new Image();
 
     BufferedImage image;
 

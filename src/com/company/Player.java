@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.sound.sampled.*;
 import java.io.IOException;
 
 public class Player {
@@ -22,6 +23,7 @@ public class Player {
     int intercanvi = 1;
     boolean escut = false;
     private Game game;
+    Thread t;
 
     public Player(Game game) throws IOException {
         this.game = game;
@@ -41,7 +43,23 @@ public class Player {
             } else if(((x + moviment) >= 1120) /*&& game.porta.isClosed()*/) {
 
                 x = x + moviment;
-                x = 20;
+
+                intercanvi = 0;
+
+                t = new Thread(() -> {
+                    try {
+                        nextRound();
+                        intercanvi = 1;
+                    } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                t.start();
+
+                //Thread.sleep(5000);
+
+                //x = 20;
 
                 game.punts = game.punts + 5;
 
@@ -53,7 +71,7 @@ public class Player {
                     }
                 }
 
-            } else if ((x + moviment) < game.getWidth()) {
+            } else if ((x + moviment) < (game.getWidth() - 160)) {
                 x = x + moviment;
             }
 
@@ -61,6 +79,19 @@ public class Player {
         }
 
         return moviment;
+    }
+
+    public void nextRound() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
+
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/zashu1.wav"));
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioIn);
+        clip.start();
+        game.paused.set(true);
+        Thread.sleep(1470);
+        game.paused.set(false);
+        game.player.x = 20;
+
     }
 
     public void keyPressed(KeyEvent e) throws InterruptedException {

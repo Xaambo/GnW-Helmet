@@ -1,11 +1,24 @@
-/*package com.company;
+package com.company;
 
-import java.applet.Applet;
-import java.applet.AudioClip;
+import javax.sound.sampled.*;
+import java.io.IOException;
 
 public class Sound {
-    public static final AudioClip BALL = Applet.newAudioClip(Sound.class.getResource("Audios/ball.wav"));
-    public static final AudioClip GAMEOVER = Applet.newAudioClip(Sound.class.getResource("Audios/gameover.wav"));
-    public static final AudioClip BACK = Applet.newAudioClip(Sound.class.getResource("Audios/back.waw"));
-    public static final AudioClip BACK2 = Applet.newAudioClip(Sound.class.getResource("Audios/hxh.wav"));
-}*/
+
+    Clip nexRound;
+    Clip bacground;
+
+    public void playSound(String name) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/" + name + ".wav"));
+        nexRound = AudioSystem.getClip();
+        nexRound.open(audioIn);
+        nexRound.start();
+    }
+
+    public void playLoop(String name) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/" + name + ".wav"));
+        bacground = AudioSystem.getClip();
+        bacground.open(audioIn);
+        bacground.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+}

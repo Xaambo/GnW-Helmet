@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javax.sound.sampled.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 public class Game extends JPanel implements Runnable {
 
     private final AtomicBoolean pressed = new AtomicBoolean(false);
+    AtomicBoolean paused = new AtomicBoolean(false);
     Player player = new Player(this);
     public ArrayList<Eina> eines = new ArrayList<>();
     int punts = 0;
@@ -23,6 +25,7 @@ public class Game extends JPanel implements Runnable {
     int temps = 10;
     int movimentEina = 5;
     Thread t1, t2;
+    Clip backgound;
 
     private final static int PRIMER = 190;
     private final static int SEGON = 350;
@@ -42,7 +45,7 @@ public class Game extends JPanel implements Runnable {
 
     Logic logic = new Logic();
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, LineUnavailableException, UnsupportedAudioFileException {
         Game programa = new Game();
         programa.iniciar();
     }
@@ -115,14 +118,14 @@ public class Game extends JPanel implements Runnable {
         return einaSeleccionada;
     }
 
-    public Game() throws IOException {
+    public Game() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (pressed.compareAndSet(false, true)) {
+                if (pressed.compareAndSet(false, true) && !paused.get()) {
                     try {
                         player.keyPressed(e);
                     } catch (InterruptedException ex) {
@@ -137,6 +140,11 @@ public class Game extends JPanel implements Runnable {
             }
         });
         setFocusable(true);
+
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(Game.class.getResource("Audios/fate.wav"));
+        backgound = AudioSystem.getClip();
+        backgound.open(audioIn);
+        backgound.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     @Override
@@ -174,6 +182,7 @@ public class Game extends JPanel implements Runnable {
 
     public void gameOver(Game game) {
         //Sound.BACK.stop();
+        backgound.close();
         JOptionPane.showMessageDialog(this, "Has mort amb una puntuació de: " + game.player.vides,
                 "U DEEEED LMAOOOO", JOptionPane.YES_NO_OPTION);
         System.exit(ABORT);
