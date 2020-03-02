@@ -34,11 +34,7 @@ public class Player {
 
         if (x + moviment > 10 && x + moviment < game.getWidth() - 20) {
 
-            if (vides <= 0) {
-
-                game.gameOver();
-
-            } else if(((x + moviment) >= 1120) && game.porta.isOpen()) {
+            if (((x + moviment) >= 1120) && game.porta.isOpen()) {
 
                 x = x + moviment;
 

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Vida extends Eina {
 
-    private com.company.Image imatges = new Image();
+    private Image imatges = new Image();
 
     BufferedImage image;
 
@@ -22,5 +22,4 @@ public class Vida extends Eina {
     public void paint(Graphics2D g) {
         g.drawImage(image, getX(), getY(), getCostat(), getCostat(), null);
     }
-
 }
