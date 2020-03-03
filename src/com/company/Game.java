@@ -5,19 +5,19 @@ import com.company.Models.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.sound.sampled.*;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class Game extends JPanel {
 
     private final AtomicBoolean pressed = new AtomicBoolean(false);
     AtomicBoolean paused = new AtomicBoolean(false);
+    AtomicBoolean gameOver = new AtomicBoolean(false);
     Player player = new Player(this);
     Porta porta = new Porta(this);
     public ArrayList<Eina> eines = new ArrayList<>();
@@ -28,6 +28,7 @@ public class Game extends JPanel {
     int creacioEines = 500;
     int movimentEina = 5;
     Thread t1, t2, t3;
+    BufferedImage backgroundImage = ImageIO.read(this.getClass().getResource("Imatges/Background.jpg"));
 
     private final static int PRIMER = 190;
     private final static int SEGON = 350;
@@ -55,6 +56,7 @@ public class Game extends JPanel {
         System.setProperty("sun.java2d.opengl","True");
 
         JFrame frame = new JFrame("Game N' Watch: Helmet GILGAMESH EDITION");
+
         frame.add(this);
         frame.setSize(1280, 720);
         frame.setVisible(true);
@@ -62,7 +64,7 @@ public class Game extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         t1 = new Thread(() -> {
-            while (true) {
+            while (!gameOver.get()) {
                 try {
                     movimentEines(Game.this);
                     Thread.sleep(temps);
@@ -73,7 +75,7 @@ public class Game extends JPanel {
         });
 
         t2 = new Thread(() -> {
-            while (true) {
+            while (!gameOver.get()) {
                 if (eines.size() < 20 && !paused.get()) {
                     try {
                         eines.add(crearEina(Game.this));
@@ -86,7 +88,7 @@ public class Game extends JPanel {
         });
 
         t3 = new Thread(() -> {
-            while (true) {
+            while (!gameOver.get()) {
                 if (!paused.get()) {
                     try {
                         porta.OpenAndClose();
@@ -164,6 +166,7 @@ public class Game extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
         porta.paint(g2d);
         player.paint(g2d);
 
@@ -193,6 +196,9 @@ public class Game extends JPanel {
     }
 
     public void gameOver() {
+
+        gameOver.set(true);
+
         sound.close();
         sound.playSound("gilgamesh2");
         JOptionPane.showMessageDialog(this, "ZASSHU DONO \n" +

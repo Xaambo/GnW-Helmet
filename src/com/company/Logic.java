@@ -22,7 +22,7 @@ public class Logic {
                     if (eina instanceof Martell) {
 
                         vides = vides - 2;
-                        game.player.x = 20;
+                        game.player.x = 30;
 
                     } else if (eina instanceof Clau) {
 
@@ -47,8 +47,10 @@ public class Logic {
                     game.player.vides = vides;
 
                     if (vides <= 0) {
-                        efectes = new Thread(game::gameOver);
-                        efectes.start();
+                        /*efectes = new Thread(game::gameOver);
+                        efectes.start();*/
+
+                        game.gameOver();
 
                         /** Modificar aquesta part per que es pari tot el joc amb el GameOver */
                     }
