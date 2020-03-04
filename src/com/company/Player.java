@@ -12,9 +12,9 @@ public class Player {
 
     BufferedImage image;
 
-    private static final int Y = 505;
+    private static final int Y = 575;
     private static final int WIDTH = 100;
-    private static final int HEIGHT = 164;
+    private static final int HEIGHT = 94;
 
     int x = 30;
     int vides = 10;
@@ -25,7 +25,7 @@ public class Player {
 
     public Player(Game game) throws IOException {
         this.game = game;
-        image = imatges.carregaImatge("ArcherGilgamesh.png");
+        image = imatges.carregaImatge("gilgamesh2.gif");
     }
 
     public void move(int moviment) {
@@ -118,7 +118,11 @@ public class Player {
 
     public void paint(Graphics2D g) {
 
-        g.drawImage(image, x, Y, WIDTH, HEIGHT, null);
+        if (!game.paused.get()) {
+            g.drawImage(image, x, Y, WIDTH, HEIGHT, null);
+        } else {
+            g.drawImage(image, x, Y, WIDTH, 164, null);
+        }
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     }
