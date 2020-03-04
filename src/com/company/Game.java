@@ -129,11 +129,11 @@ public class Game extends JPanel {
         else if (eina < 20)
             einaSeleccionada = new Vida(posicions.get(posicio), 0, game);
         else if (eina < 47)
-            einaSeleccionada = new Clau(posicions.get(posicio), 0, game);
+            einaSeleccionada = new Martell(posicions.get(posicio), 0, game);
         else if (eina < 74)
             einaSeleccionada = new Tornavis(posicions.get(posicio), 0, game);
         else if (eina < 100)
-            einaSeleccionada = new Martell(posicions.get(posicio), 0, game);
+            einaSeleccionada = new RainbowCat(posicions.get(posicio), 0, game);
 
         return einaSeleccionada;
     }

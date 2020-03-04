@@ -19,12 +19,12 @@ public class Logic {
                     eina = game.eines.get(i);
                     game.eines.remove(i);
 
-                    if (eina instanceof Martell) {
+                    if (eina instanceof RainbowCat) {
 
                         vides = vides - 2;
                         game.player.x = 30;
 
-                    } else if (eina instanceof Clau) {
+                    } else if (eina instanceof Martell) {
 
                         vides = vides - 1;
                         efectesPlayer(2000, 0, false, game);
