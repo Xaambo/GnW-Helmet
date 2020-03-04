@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ public class Player {
     private Sound sound = new Sound();
 
     BufferedImage image;
+    ImageIcon imageGIF;
+    ImageIcon imageGIFreves;
 
     private static final int Y = 575;
     private static final int WIDTH = 100;
@@ -19,13 +22,16 @@ public class Player {
     int x = 30;
     int vides = 10;
     int intercanvi = 1;
+    int direccio = 0;
     boolean escut = false;
     private Game game;
     private Thread t;
 
     public Player(Game game) throws IOException {
         this.game = game;
-        image = imatges.carregaImatge("gilgamesh2.gif");
+        image = imatges.carregaImatge("ArcherGilgamesh.png");
+        imageGIF = imatges.carregaGIF("gilgamesh2.gif");
+        imageGIFreves = imatges.carregaGIF("gilgamesh2reves.gif");
     }
 
     public void move(int moviment) {
@@ -108,9 +114,11 @@ public class Player {
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             moviment = -160;
+            direccio = 1;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             moviment = 160;
+            direccio = 0;
         }
 
         move(moviment);
@@ -119,9 +127,13 @@ public class Player {
     public void paint(Graphics2D g) {
 
         if (!game.paused.get()) {
-            g.drawImage(image, x, Y, WIDTH, HEIGHT, null);
+            //g.drawImage(imageGIF, x, Y, WIDTH, HEIGHT, null);
+            if (direccio == 0)
+                imageGIF.paintIcon(game, g, x, Y);
+            else
+                imageGIFreves.paintIcon(game, g, x, Y);
         } else {
-            g.drawImage(image, x, Y, WIDTH, 164, null);
+            g.drawImage(image, x, Y - 70, WIDTH, 164, null);
         }
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
