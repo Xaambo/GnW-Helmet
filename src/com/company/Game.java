@@ -46,9 +46,15 @@ public class Game extends JPanel {
         add(SISE);
     }};
 
-    public static void main(String[] args) throws IOException {
-        Game programa = new Game();
-        programa.iniciar();
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Game programa = new Game();
+                programa.iniciar();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void iniciar() {
