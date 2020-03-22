@@ -238,7 +238,7 @@ public class Game extends JPanel {
         gameOver.set(true);
         isGame = false;
 
-        //sound.close();
+        sound.close();
         sound.playSound("gilgamesh2");
 
         JOptionPane.showMessageDialog(this, "ZASSHU DONO \n" +

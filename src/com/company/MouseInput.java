@@ -10,7 +10,7 @@ public class MouseInput implements MouseListener {
 
     public MouseInput(Game game, Sound sound) {
         this.game = game;
-        //this.sound = sound;
+        this.sound = sound;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MouseInput implements MouseListener {
                 if (y >= 210 && y <= 300) {
                     game.isGame = true;
                     game.paused.set(false);
-                    //sound.playLoop("fate");
+                    sound.playLoop("fate");
                 }
             }
         }
