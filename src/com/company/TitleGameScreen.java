@@ -26,7 +26,7 @@ public class TitleGameScreen {
     public TitleGameScreen() {
         System.setProperty("sun.java2d.opengl","True");
 
-        frame = new JFrame("Game N' Watch: Helmet GILGAMESH EDITION");
+        frame = new JFrame("Hola");
 
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);

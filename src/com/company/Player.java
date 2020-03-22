@@ -59,7 +59,7 @@ public class Player {
 
                 game.punts = game.punts + 5;
 
-                if (game.punts == 5) {
+                if (game.punts == 30) {
 
                     game.punts = 0;
                     game.ronda = game.ronda + 1;

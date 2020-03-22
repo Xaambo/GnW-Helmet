@@ -1,12 +1,14 @@
 package com.company;
 
 import com.company.Models.*;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.imageio.ImageIO;
@@ -16,19 +18,27 @@ import javax.swing.*;
 public class Game extends JPanel {
 
     private final AtomicBoolean pressed = new AtomicBoolean(false);
-    AtomicBoolean paused = new AtomicBoolean(false);
-    AtomicBoolean gameOver = new AtomicBoolean(false);
-    Player player = new Player(this);
-    Porta porta = new Porta(this);
+    protected AtomicBoolean paused = new AtomicBoolean(true);
+    protected AtomicBoolean gameOver = new AtomicBoolean(false);
+
+    protected Player player = new Player(this);
+    protected Porta porta = new Porta(this);
+    protected Menu menu = new Menu(this);
+
     public ArrayList<Eina> eines = new ArrayList<>();
-    Sound sound = new Sound();
-    int punts = 0;
-    int ronda = 0;
-    int temps = 10;
-    int creacioEines = 500;
-    int movimentEina = 5;
-    Thread t1, t2, t3;
-    BufferedImage backgroundImage = ImageIO.read(this.getClass().getResource("Imatges/Background.jpg"));
+
+    protected Sound sound = new Sound();
+    private JSON json = new JSON();
+
+    protected int punts = 0;
+    protected int ronda = 0;
+    protected int temps = 10;
+    protected int creacioEines = 500;
+    protected int movimentEina = 5;
+    protected Thread t1, t2, t3;
+    protected BufferedImage backgroundImage = ImageIO.read(this.getClass().getResource("Imatges/Background.jpg"));
+
+    protected boolean isGame = false;
 
     private final static int PRIMER = 190;
     private final static int SEGON = 350;
@@ -47,14 +57,14 @@ public class Game extends JPanel {
     }};
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                Game programa = new Game();
-                programa.iniciar();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+
+        try {
+            Game programa = new Game();
+            programa.iniciar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void iniciar() {
@@ -74,7 +84,7 @@ public class Game extends JPanel {
                 try {
                     movimentEines(Game.this);
                     Thread.sleep(temps);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -163,7 +173,9 @@ public class Game extends JPanel {
         });
         setFocusable(true);
 
-        sound.playLoop("fate");
+        addMouseListener(new MouseInput(this, sound));
+
+        //sound.playLoop("fate");
     }
 
     @Override
@@ -173,27 +185,41 @@ public class Game extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
-        porta.paint(g2d);
-        player.paint(g2d);
 
-        for (int i = 0; i < eines.size(); i++) {
-            eines.get(i).paint(g2d);
+        if (isGame) {
+
+            porta.paint(g2d);
+            player.paint(g2d);
+
+            for (int i = 0; i < eines.size(); i++) {
+                eines.get(i).paint(g2d);
+            }
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Vides: " + player.vides, 10, 30);
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Puntuació: " + punts, 1100, 30);
+
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Verdana", Font.BOLD, 20));
+            g2d.drawString("Ronda: " + ronda, 1142, 60);
+
+        } else {
+
+            try {
+                menu.paint(g2d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        g2d.setColor(Color.GRAY);
-        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-        g2d.drawString("Vides: " + player.vides, 10, 30);
-
-        g2d.setColor(Color.GRAY);
-        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-        g2d.drawString("Puntuació: " + punts, 1100, 30);
-
-        g2d.setColor(Color.GRAY);
-        g2d.setFont(new Font("Verdana", Font.BOLD, 20));
-        g2d.drawString("Ronda: " + ronda, 1142, 60);
     }
 
-    public ArrayList<Eina> movimentEines(Game game) {
+    public ArrayList<Eina> movimentEines(Game game) throws IOException {
 
         for (int i = 0; i < eines.size(); i++) {
             eines.get(i).move(game, movimentEina);
@@ -201,16 +227,25 @@ public class Game extends JPanel {
         return eines;
     }
 
-    public void gameOver() {
+    public void gameOver() throws IOException {
+
+        JSONObject newTop;
+
+        newTop = new JSONObject("{\"Rondes\":" + ronda + ",\"Puntuacio\":" + punts + "}");
+
+        json.writeRankingFile(newTop);
 
         gameOver.set(true);
+        isGame = false;
 
-        sound.close();
+        //sound.close();
         sound.playSound("gilgamesh2");
+
         JOptionPane.showMessageDialog(this, "ZASSHU DONO \n" +
                         "Rondes: " + ronda + "\n" +
                         "Puntuació ronda final: " + punts,
-                "DOKO DA... BAASAKA", JOptionPane.ERROR_MESSAGE);
+                   "DOKO DA... BAASAKA", JOptionPane.ERROR_MESSAGE);
+
         System.exit(ABORT);
     }
 

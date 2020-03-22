@@ -4,6 +4,7 @@ import com.company.Game;
 import com.company.Logic;
 
 import java.awt.*;
+import java.io.IOException;
 
 public abstract class Eina {
 
@@ -31,7 +32,7 @@ public abstract class Eina {
         return costat;
     }
 
-    public void move(Game game, int moviment) {
+    public void move(Game game, int moviment) throws IOException {
         if (y < 525) {
             y = y + moviment;
             logic.collision(game);

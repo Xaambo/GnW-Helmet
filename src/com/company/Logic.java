@@ -2,11 +2,13 @@ package com.company;
 
 import com.company.Models.*;
 
+import java.io.IOException;
+
 public class Logic {
 
     Thread efectes;
 
-    public boolean collision(Game game) {
+    public boolean collision(Game game) throws IOException {
 
         int vides = game.player.vides;
         Eina eina;
