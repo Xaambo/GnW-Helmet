@@ -49,12 +49,9 @@ public class Logic {
                     game.player.vides = vides;
 
                     if (vides <= 0) {
-                        /*efectes = new Thread(game::gameOver);
-                        efectes.start();*/
 
                         game.gameOver();
 
-                        /** Modificar aquesta part per que es pari tot el joc amb el GameOver */
                     }
 
                     return true;

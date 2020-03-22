@@ -79,11 +79,11 @@ public class Game extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        t1 = new Thread(() -> {
-            while (!gameOver.get()) {
+        t1 = new Thread(() -> { /**inicialitzem el thread */
+            while (!gameOver.get()) { /**iniciem un while que només es trenca un cop ha acabat el joc*/
                 try {
-                    movimentEines(Game.this);
-                    Thread.sleep(temps);
+                    movimentEines(Game.this); /**per cada volta del while mou les eines*/
+                    Thread.sleep(temps); /**dormim el thread perque les eines no baixin sense cap control i siguin visibles pel jugador*/
                 } catch (InterruptedException | IOException e) {
                     e.printStackTrace();
                 }
