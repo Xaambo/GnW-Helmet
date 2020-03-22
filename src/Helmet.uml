@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.company</OriginalElement>
+  <nodes>
+    <node x="312.57439837180164" y="0.0">com.company.Sound</node>
+    <node x="491.2753064054392" y="119.0">com.company.Menu</node>
+    <node x="242.6666107532653" y="119.0">com.company.Porta</node>
+    <node x="380.0" y="491.0">com.company.Audios</node>
+    <node x="353.2753064054392" y="119.0">com.company.MouseInput</node>
+    <node x="296.97149534800496" y="318.0">com.company.Game</node>
+    <node x="16.58327741993196" y="0.0">com.company.Logic</node>
+    <node x="198.0" y="491.0">com.company.Imatges</node>
+    <node x="0.0" y="491.0">com.company.BackgroundImage</node>
+    <node x="92.6666107532653" y="119.0">com.company.Models</node>
+    <node x="280.47149534800496" y="417.0">com.company.Player</node>
+    <node x="535.5253064054393" y="0.0">com.company.JSON</node>
+    <node x="155.16661075326533" y="0.0">com.company.Image</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="306.0" y="260.0" />
+  <SelectedNodes>
+    <node>com.company.Sound</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
